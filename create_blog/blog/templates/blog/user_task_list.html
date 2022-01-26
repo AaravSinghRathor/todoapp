@@ -1,0 +1,46 @@
+{% extends "blog/base.html" %}
+{% block content %}
+<h3 class="mb-5">Tasks by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h3>
+<div class="row row-cols-1 row-cols-md-1 g-0">
+{% for task in tasks %}
+  <div class="card mb-3" style="max-width: 800px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ task.author.profile.profile_image.url }}" class="img-fluid rounded" alt="profile-image">
+      </div>
+      <div class="col-md-8">
+        <h5 class="card-header">{{ task.author }}</h5>
+        <div class="card-body">
+          <h5 class="card-title"><a href="{% url 'task-detail' task.id %}" target="_blank">{{ task.task_name }}</a></h5>
+          <p class="card-text">{{ task.task_description }}</p>
+          <p class="card-text"><small class="text-muted">{{ task.task_created_date|date:"F d, Y" }}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+
+{% if is_paginated %}
+  {% if page_obj.has_previous %}
+    <a href="?page=1" class="btn btn-outline-info">First</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-info">Previous</a>
+  {% endif %}
+
+  {% for page_num in page_obj.paginator.page_range  %}
+    {% if page_num == page_obj.number %}
+        <a href="?page={{ page_num }}" class="btn btn-info">{{ page_num }}</a>
+    {% else %}
+        {% if page_num > page_obj.number|add:'-3' and page_num < page_obj.number|add:'3' %}
+          <a href="?page={{ page_num }}" class="btn btn-outline-info">{{ page_num }}</a>
+        {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-info">Last</a>
+    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-info">Next</a>
+  {% endif %}
+{% endif %}
+    
+{% endblock content %}

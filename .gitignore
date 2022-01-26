@@ -1,3 +1,6 @@
+# Config file
+config/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +130,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.DS_Store
+
+# Django specific files
+media/
+static/
+db.sqlite3
